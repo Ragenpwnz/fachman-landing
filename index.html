@@ -366,13 +366,14 @@ var SLOT_BRIGHT= [0.38, 1.0, 0.38];
 var OFF_X      = [-9, 9];
 
 var pState = phones.map(function(_, i) {
-  return {x: SLOT_X[i], rotY: SLOT_ROTY[i], scale: SLOT_SCALE[i], bright: SLOT_BRIGHT[i]};
+  return {x: SLOT_X[i], y: 0, rotY: SLOT_ROTY[i], scale: SLOT_SCALE[i], bright: SLOT_BRIGHT[i]};
 });
 
 function applyState() {
   phones.forEach(function(ph, i) {
     var s = pState[i];
     ph.group.position.x = s.x;
+    ph.group.position.y = s.y || 0;
     ph.group.rotation.y = s.rotY;
     ph.group.scale.setScalar(s.scale);
     ph.group.traverse(function(child) {
@@ -437,7 +438,7 @@ function navigate(dir) {
   fromState = phones.map(function(_,i) { return Object.assign({},pState[i]); });
   toState = phones.map(function(_,i) {
     var slot = phoneSlots.indexOf(i);
-    return {x:SLOT_X[slot], rotY:SLOT_ROTY[slot], scale:SLOT_SCALE[slot], bright:SLOT_BRIGHT[slot]};
+    return {x:SLOT_X[slot], y:0, rotY:SLOT_ROTY[slot], scale:SLOT_SCALE[slot], bright:SLOT_BRIGHT[slot]};
   });
   animT = 0; animating = true;
 }
@@ -466,10 +467,10 @@ canvas.addEventListener("touchend", function(e) {
 function sa() { autoT=setInterval(function(){navigate(1);},4200); }
 function ra() { clearInterval(autoT); if(carOn) sa(); }
 
-var Z_HERO = 4.8;
-var Y_HERO = -1.6;
+var Z_HERO = 4.4;
 var Z_CAR  = 11.0;
-var Y_CAR  = 0.3;
+var CAM_Y  = 0.15;
+var HERO_HIDE_Y = -3.35;
 
 var ht = document.getElementById("ht");
 var sz = document.getElementById("sz");
@@ -479,8 +480,10 @@ var dotsEl = document.getElementById("carDots");
 var nameEl = document.getElementById("carName");
 var c3d = document.getElementById("c3d");
 
-camera.position.set(0, Y_HERO, Z_HERO);
+camera.position.set(0, CAM_Y, Z_HERO);
 camera.lookAt(0, 0, 0);
+pState[phoneSlots[1]].y = HERO_HIDE_Y;
+applyState();
 
 function onScroll() {
   var sy = window.scrollY;
@@ -494,13 +497,13 @@ function onScroll() {
   ht.style.pointerEvents = p1>.8 ? "none" : "auto";
 
   var camZ = lerp(Z_HERO, Z_CAR, p1);
-  var camY = lerp(Y_HERO, Y_CAR, p1);
-  camera.position.set(0, camY, camZ);
+  camera.position.set(0, CAM_Y, camZ);
   camera.lookAt(0, 0, 0);
 
   var p2 = ease(Math.min(Math.max((p-0.4)/0.35, 0), 1));
 
   if (!carOn) {
+    pState[phoneSlots[1]].y      = lerp(HERO_HIDE_Y, 0, p1);
     pState[phoneSlots[0]].x     = lerp(0, SLOT_X[0], p2);
     pState[phoneSlots[2]].x     = lerp(0, SLOT_X[2], p2);
     pState[phoneSlots[0]].bright = lerp(0, SLOT_BRIGHT[0], p2);
@@ -541,6 +544,7 @@ function render(time) {
     phones.forEach(function(_,i) {
       var f=fromState[i], to=toState[i];
       pState[i].x     = lerp(f.x,     to.x,     t);
+      pState[i].y     = lerp(f.y||0,  to.y||0,  t);
       pState[i].rotY  = lerp(f.rotY,  to.rotY,  t);
       pState[i].scale = lerp(f.scale, to.scale, t);
       pState[i].bright= lerp(f.bright,to.bright,t);
