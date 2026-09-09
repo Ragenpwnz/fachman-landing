@@ -224,7 +224,11 @@ const SCREENS = ["screens/01-dashboard.jpg","screens/02-zakazky.jpg","screens/03
 
 const texLoader = new THREE.TextureLoader();
 const textures = SCREENS.map(function(src){
-  var tex = texLoader.load(src, function(){ tex.needsUpdate = true; });
+  var tex = texLoader.load(src,
+    function(t){ tex.needsUpdate = true; console.log('TEX_OK', src, t.image.width, t.image.height); },
+    undefined,
+    function(err){ console.error('TEX_ERR', src, err); }
+  );
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.generateMipmaps = false;
   tex.minFilter = THREE.LinearFilter;
