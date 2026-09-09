@@ -298,6 +298,17 @@ function roundedBox(w,h,d,r) {
   return g;
 }
 
+function roundedPlane(w,h,r) {
+  const s = new THREE.Shape();
+  const bx=-w/2, by=-h/2;
+  s.moveTo(bx+r,by);
+  s.lineTo(bx+w-r,by); s.quadraticCurveTo(bx+w,by,bx+w,by+r);
+  s.lineTo(bx+w,by+h-r); s.quadraticCurveTo(bx+w,by+h,bx+w-r,by+h);
+  s.lineTo(bx+r,by+h); s.quadraticCurveTo(bx,by+h,bx,by+h-r);
+  s.lineTo(bx,by+r); s.quadraticCurveTo(bx,by,bx+r,by);
+  return new THREE.ShapeGeometry(s, 24);
+}
+
 const matBody = new THREE.MeshPhysicalMaterial({color:0x1b1c1f,metalness:0.9,roughness:0.35,clearcoat:0.6,clearcoatRoughness:0.25,envMapIntensity:1.2});
 const matAlu  = new THREE.MeshPhysicalMaterial({color:0x2a2b2f,metalness:1.0,roughness:0.3,envMapIntensity:1.3});
 const lensMat = new THREE.MeshPhysicalMaterial({color:0x0a1a2a,metalness:0.3,roughness:0.02,clearcoat:1,clearcoatRoughness:0.02,transmission:0.5,ior:1.5,envMapIntensity:2.0,reflectivity:1});
@@ -310,9 +321,9 @@ function buildPhone(screenTex) {
   body.castShadow=true; body.receiveShadow=true; g.add(body);
   g.add(new THREE.Mesh(roundedBox(pw+0.06,ph+0.06,pd*0.7,0.38), matAlu));
   const scrMat = new THREE.MeshBasicMaterial({map: screenTex, toneMapped:false});
-  const scr = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.26,ph-0.26), scrMat);
+  const scr = new THREE.Mesh(roundedPlane(pw-0.09,ph-0.09,0.30), scrMat);
   scr.position.z = pd/2+0.09; g.add(scr);
-  const glass = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.27,ph-0.27),
+  const glass = new THREE.Mesh(roundedPlane(pw-0.10,ph-0.10,0.30),
     new THREE.MeshPhysicalMaterial({transparent:true,opacity:0.06,roughness:0.06,metalness:0,clearcoat:1}));
   glass.position.z = pd/2+0.11; g.add(glass);
   const camPlate = new THREE.Mesh(roundedBox(1.15,1.15,0.12,0.28),
