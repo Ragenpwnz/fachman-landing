@@ -312,11 +312,11 @@ function buildPhone(screenTex) {
   const body = new THREE.Mesh(roundedBox(pw,ph,pd,0.36), matBody);
   body.castShadow=true; body.receiveShadow=true; g.add(body);
   g.add(new THREE.Mesh(roundedBox(pw+0.06,ph+0.06,pd*0.7,0.38), matAlu));
-  const scrMat = new THREE.MeshBasicMaterial({map: screenTex});
+  const scrMat = new THREE.MeshBasicMaterial({map: screenTex, toneMapped:false});
   const scr = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.26,ph-0.26), scrMat);
   scr.position.z = pd/2+0.02; g.add(scr);
   const glass = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.1,ph-0.1),
-    new THREE.MeshPhysicalMaterial({transparent:true,opacity:0.08,roughness:0.06,metalness:0,transmission:0.4,clearcoat:1}));
+    new THREE.MeshPhysicalMaterial({transparent:true,opacity:0.06,roughness:0.06,metalness:0,clearcoat:1}));
   glass.position.z = pd/2+0.04; g.add(glass);
   const camPlate = new THREE.Mesh(roundedBox(1.15,1.15,0.12,0.28),
     new THREE.MeshPhysicalMaterial({color:0x141519,metalness:0.8,roughness:0.4,envMapIntensity:1.1}));
