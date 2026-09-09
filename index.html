@@ -21,7 +21,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:cen
 .sz{height:400vh;position:relative}
 .svp{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg)}
 .glow{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 38%,rgba(255,107,26,.18) 0%,transparent 65%);pointer-events:none;z-index:0}
-.htext{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;flex-direction:column;align-items:center;text-align:center;padding:150px 5vw 0;will-change:opacity,transform}
+.htext{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;flex-direction:column;align-items:center;text-align:center;padding:172px 5vw 0;will-change:opacity,transform}
 .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--or);color:var(--or);font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:6px 16px;margin-bottom:22px;animation:fu .5s ease both}
 .bdot{width:6px;height:6px;background:var(--or);border-radius:50%;animation:pu 2s infinite;flex-shrink:0}
 .hh1{font-family:'Barlow Condensed',sans-serif;font-weight:900;text-transform:uppercase;line-height:.92;font-size:clamp(2rem,5vw,5rem);margin-bottom:18px;animation:fu .5s .1s ease both}
@@ -218,24 +218,16 @@ footer a:hover{color:var(--or)}
 <script>
 (function(){
 
-const N = 7;
-const LABELS = ["Dashboard","Zakázky","Detail","Položky","Fakturace","Finance","PDF faktura"];
+const N = 5;
+const LABELS = ["Dashboard","Zakázky","Detail","Fakturace","Finance"];
+const SCREENS = ["screens/01-dashboard.jpg","screens/02-zakazky.jpg","screens/03-detail.jpg","screens/04-fakturace.jpg","screens/05-finance.jpg"];
 
-// Placeholder gradient textures (real base64 screenshots to be swapped in by user asset pipeline)
-function makePlaceholderTexture(label, hue){
-  const c = document.createElement('canvas'); c.width=390; c.height=844;
-  const x = c.getContext('2d');
-  const g = x.createLinearGradient(0,0,0,844);
-  g.addColorStop(0, `hsl(${hue},70%,18%)`);
-  g.addColorStop(1, `hsl(${hue},70%,8%)`);
-  x.fillStyle=g; x.fillRect(0,0,390,844);
-  x.fillStyle='#fff'; x.font='bold 32px sans-serif'; x.textAlign='center';
-  x.fillText(label, 195, 420);
-  const tex = new THREE.CanvasTexture(c);
+const texLoader = new THREE.TextureLoader();
+const textures = SCREENS.map(function(src){
+  var tex = texLoader.load(src);
   tex.colorSpace = THREE.SRGBColorSpace;
   return tex;
-}
-const textures = LABELS.map((l,i)=>makePlaceholderTexture(l, 20 + i*40));
+});
 
 const canvas = document.getElementById("c3d");
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
@@ -471,7 +463,7 @@ function ra() { clearInterval(autoT); if(carOn) sa(); }
 var Z_HERO = 4.4;
 var Z_CAR  = 11.0;
 var CAM_Y  = 0.15;
-var HERO_HIDE_Y = -2.75;
+var HERO_HIDE_Y = -3.05;
 
 var ht = document.getElementById("ht");
 var sz = document.getElementById("sz");
