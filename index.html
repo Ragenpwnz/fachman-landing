@@ -71,9 +71,10 @@ h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.4
 .wn{width:100px;height:100px;border-radius:50%;background:var(--bg2);border:3px solid var(--brd);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;color:var(--gr);flex-shrink:0;transition:border-color .5s,color .5s,background .5s,box-shadow .5s}
 .ws.on .wn{border-color:var(--or);color:var(--or);background:rgba(255,107,26,.1);box-shadow:0 0 44px rgba(255,107,26,.32)}
 .wc{display:flex;flex-direction:column;align-items:center;flex:1;padding:8px 0}
-.wt{width:3px;flex:1;background:var(--brd);border-radius:2px;position:relative;overflow:hidden;min-height:80px}
-.wf{position:absolute;top:0;left:0;right:0;height:0%;background:var(--or);border-radius:2px}
-.ww{font-size:1.5rem;color:var(--brd);transition:color .5s;margin-top:6px;line-height:1}
+.wt-svg{width:28px;flex:1;min-height:170px;overflow:visible}
+.wt-bg{fill:none;stroke:var(--brd);stroke-width:3;stroke-linecap:round}
+.wt-fill{fill:none;stroke:var(--or);stroke-width:3;stroke-linecap:round}
+.ww{font-size:1.4rem;color:var(--brd);transition:color .3s,opacity .3s,transform .3s;margin-top:8px;line-height:1;opacity:.35;transform:scale(.6)}
 .ws.on .ww{color:var(--or)}
 .wb{padding:24px 0 88px 48px;opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
 .ws.on .wb{opacity:1;transform:translateY(0)}
@@ -147,8 +148,8 @@ footer a:hover{color:var(--or)}
 </div>
 
 <section class="feat-sec" id="features">
-  <div class="sec-lbl">Co Fachman umí</div>
-  <h2>Všechno co potřebuješ<br>jako řemeslník</h2>
+  <div class="sec-lbl reveal">Co Fachman umí</div>
+  <h2 class="reveal">Všechno co potřebuješ<br>jako řemeslník</h2>
   <div class="fg">
     <div class="feat"><span class="fi">&#128203;</span><h3>Správa zakázek</h3><p>Od poptávky po zaplacení. Fachman vše ohlídá.</p></div>
     <div class="feat"><span class="fi">&#129534;</span><h3>Fakturace s QR</h3><p>Faktury pro plátce i neplátce DPH. PDF s QR kódem.</p></div>
@@ -161,20 +162,20 @@ footer a:hover{color:var(--or)}
   </div>
 </section>
 <section class="wf-sec" id="workflow">
-  <div class="sec-lbl">Jak to funguje</div>
-  <h2>Od poptávky<br>k výplatě</h2>
+  <div class="sec-lbl reveal">Jak to funguje</div>
+  <h2 class="reveal">Od poptávky<br>k výplatě</h2>
   <div class="wf-inner">
-<div class="ws" data-i="0"><div class="wleft"><div class="wn">1</div><div class='wc'><div class='wt'><div class='wf' id='wl0'></div></div><span class='ww'>a</span></div></div><div class="wb"><h3>Poptávka</h3><p>Zákazník zavolá &#8211; ty otevřeš Fachman a za minutu máš novou zakázku zaevidovanou.</p></div></div>
-<div class="ws" data-i="1"><div class="wleft"><div class="wn">2</div><div class='wc'><div class='wt'><div class='wf' id='wl1'></div></div><span class='ww'>a</span></div></div><div class="wb"><h3>Nabídka</h3><p>Sestavíš cenovou nabídku s položkami přímo v aplikaci a pošleš ji zákazníkovi.</p></div></div>
-<div class="ws" data-i="2"><div class="wleft"><div class="wn">3</div><div class='wc'><div class='wt'><div class='wf' id='wl2'></div></div><span class='ww'>a</span></div></div><div class="wb"><h3>Realizace</h3><p>Eviduješ hodiny, výdaje za materiál a fotky z průběhu. Vše přiřazeno ke konkrétní zakázce.</p></div></div>
-<div class="ws" data-i="3"><div class="wleft"><div class="wn">4</div><div class='wc'><div class='wt'><div class='wf' id='wl3'></div></div><span class='ww'>a</span></div></div><div class="wb"><h3>Fakturace</h3><p>Za 30 sekund vystavíš fakturu s DPH a QR kódem. PDF jde zákazníkovi mailem nebo přes WhatsApp.</p></div></div>
-<div class="ws" data-i="4"><div class="wleft"><div class="wn">5</div><div class='wc'><div class='wt'><div class='wf' id='wl4'></div></div><span class='ww'>a</span></div></div><div class="wb"><h3>Platba</h3><p>Fachman hlídá splatnosti, ty eviduješ platby. Žádná pohledávka ti nezapadne.</p></div></div>
+<div class="ws" data-i="0"><div class="wleft"><div class="wn">1</div><div class='wc'><svg class='wt-svg' viewBox='0 0 24 220' preserveAspectRatio='none'><path class='wt-bg' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/><path class='wt-fill' id='wl0' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/></svg><span class='ww' id='wa0'>&#8595;</span></div></div><div class="wb"><h3>Poptávka</h3><p>Zákazník zavolá &#8211; ty otevřeš Fachman a za minutu máš novou zakázku zaevidovanou.</p></div></div>
+<div class="ws" data-i="1"><div class="wleft"><div class="wn">2</div><div class='wc'><svg class='wt-svg' viewBox='0 0 24 220' preserveAspectRatio='none'><path class='wt-bg' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/><path class='wt-fill' id='wl1' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/></svg><span class='ww' id='wa1'>&#8595;</span></div></div><div class="wb"><h3>Nabídka</h3><p>Sestavíš cenovou nabídku s položkami přímo v aplikaci a pošleš ji zákazníkovi.</p></div></div>
+<div class="ws" data-i="2"><div class="wleft"><div class="wn">3</div><div class='wc'><svg class='wt-svg' viewBox='0 0 24 220' preserveAspectRatio='none'><path class='wt-bg' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/><path class='wt-fill' id='wl2' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/></svg><span class='ww' id='wa2'>&#8595;</span></div></div><div class="wb"><h3>Realizace</h3><p>Eviduješ hodiny, výdaje za materiál a fotky z průběhu. Vše přiřazeno ke konkrétní zakázce.</p></div></div>
+<div class="ws" data-i="3"><div class="wleft"><div class="wn">4</div><div class='wc'><svg class='wt-svg' viewBox='0 0 24 220' preserveAspectRatio='none'><path class='wt-bg' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/><path class='wt-fill' id='wl3' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/></svg><span class='ww' id='wa3'>&#8595;</span></div></div><div class="wb"><h3>Fakturace</h3><p>Za 30 sekund vystavíš fakturu s DPH a QR kódem. PDF jde zákazníkovi mailem nebo přes WhatsApp.</p></div></div>
+<div class="ws" data-i="4"><div class="wleft"><div class="wn">5</div><div class='wc'><svg class='wt-svg' viewBox='0 0 24 220' preserveAspectRatio='none'><path class='wt-bg' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/><path class='wt-fill' id='wl4' d='M12,0 C 2,30 22,55 12,85 C 2,115 22,140 12,170 C 2,195 22,205 12,220'/></svg><span class='ww' id='wa4'>&#8595;</span></div></div><div class="wb"><h3>Platba</h3><p>Fachman hlídá splatnosti, ty eviduješ platby. Žádná pohledávka ti nezapadne.</p></div></div>
 <div class="ws" data-i="5"><div class="wleft"><div class="wn">6</div></div><div class="wb"><h3>Archivace</h3><p>Zakázka uchována v cloudu se všemi daty. Údaje pro účetnictví připraveny na export.</p></div></div>
   </div>
 </section>
 <section class="pr-sec">
-  <div class="sec-lbl">Cena</div>
-  <h2>Jednoduchá cena,<br>žádná překvapení</h2>
+  <div class="sec-lbl reveal">Cena</div>
+  <h2 class="reveal">Jednoduchá cena,<br>žádná překvapení</h2>
   <div class="pc reveal">
     <div class="pglow"></div>
     <div class="pn">299</div>
@@ -190,8 +191,8 @@ footer a:hover{color:var(--or)}
   </div>
 </section>
 <section class="fq-sec" id="faq">
-  <div class="sec-lbl">Časté dotazy</div>
-  <h2>FAQ</h2>
+  <div class="sec-lbl reveal">Časté dotazy</div>
+  <h2 class="reveal">FAQ</h2>
   <div class="fql">
     <div class="fqi reveal"><button class="fqq">Co je Fachman? <span class="fqic">+</span></button><div class="fqa"><p>Mobilní aplikace pro řemeslníky.</p></div></div>
     <div class="fqi reveal"><button class="fqq">Je Fachman zdarma? <span class="fqic">+</span></button><div class="fqa"><p>Zkušební lůhta zdarma bez kreditní karty. Po jejím uplynutí 299 Kč měsíčně.</p></div></div>
@@ -201,9 +202,9 @@ footer a:hover{color:var(--or)}
   </div>
 </section>
 <section class="cta-sec" id="cta">
-  <h2>Přestaň řešit papíry.<br><span style="color:var(--or)">Začni vydělávat víc.</span></h2>
-  <p>Připoj se k řemeslníkům, kteří mají zakázky pod kontrolou.</p>
-  <div class="sr">
+  <h2 class="reveal">Přestaň řešit papíry.<br><span style="color:var(--or)">Začni vydělávat víc.</span></h2>
+  <p class="reveal">Připoj se k řemeslníkům, kteří mají zakázky pod kontrolou.</p>
+  <div class="sr reveal">
     <a href="#" class="sb"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><div class="sbt"><span class="sbs">Stáhnout z</span><span class="sbn">App Store</span></div></a>
     <a href="#" class="sb"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.37.21.8.22 1.2.02l11.24-6.43-2.41-2.41-10.03 8.82zM.44 1.6C.17 1.99.01 2.51.01 3.14v17.71c0 .63.16 1.15.43 1.54l.08.07 9.92-9.9v-.23L.52 1.53l-.08.07zM20.13 9.53l-2.55-1.46-2.7 2.69 2.7 2.7 2.57-1.47c.73-.42.73-1.1-.02-1.46zM4.38.22L15.62 6.65l-2.41 2.41L3.18.24C3.57.04 4.01.05 4.38.22z"/></svg><div class="sbt"><span class="sbs">Stáhnout na</span><span class="sbn">Google Play</span></div></a>
   </div>
@@ -581,8 +582,13 @@ feats.forEach(function(el,i){el.style.transition='opacity .65s '+(i*50)+'ms ease
 var fo=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateX(0)';}else{var r=e.target.getBoundingClientRect();e.target.style.opacity='0';e.target.style.transform=r.bottom<0?'translateX(-100px)':'translateX(100px)';}});},{threshold:0.1});
 feats.forEach(function(el){fo.observe(el);});
 var wss=Array.from(document.querySelectorAll('.ws'));
-var wls={};for(var wi=0;wi<5;wi++)wls[wi]=document.getElementById('wl'+wi);
-function uwf(){var trig=window.innerHeight*.65;wss.forEach(function(s,i){var nr=s.querySelector('.wn').getBoundingClientRect();s.classList.toggle('on',nr.top+nr.height/2<trig);if(i<5&&wls[i]){var tr=s.querySelector('.wt');if(!tr)return;var r=tr.getBoundingClientRect();if(r.bottom<trig)wls[i].style.height='100%';else if(r.top>trig)wls[i].style.height='0%';else wls[i].style.height=((trig-r.top)/(r.bottom-r.top)*100)+'%';}});}
+var wls={},wlLen={},was={};
+for(var wi=0;wi<5;wi++){
+  wls[wi]=document.getElementById('wl'+wi);
+  was[wi]=document.getElementById('wa'+wi);
+  if(wls[wi]){var L=wls[wi].getTotalLength();wlLen[wi]=L;wls[wi].style.strokeDasharray=L;wls[wi].style.strokeDashoffset=L;}
+}
+function uwf(){var trig=window.innerHeight*.65;wss.forEach(function(s,i){var nr=s.querySelector('.wn').getBoundingClientRect();s.classList.toggle('on',nr.top+nr.height/2<trig);if(i<5&&wls[i]){var tr=s.querySelector('.wt-svg');if(!tr)return;var r=tr.getBoundingClientRect();var f;if(r.bottom<trig)f=1;else if(r.top>trig)f=0;else f=(trig-r.top)/(r.bottom-r.top);f=Math.max(0,Math.min(1,f));var L=wlLen[i];wls[i].style.strokeDashoffset=L*(1-f);if(was[i]){was[i].style.opacity=0.35+f*0.65;was[i].style.transform='scale('+(0.6+f*0.5)+')';}}});}
 window.addEventListener('scroll',uwf,{passive:true});uwf();
 var ro=new IntersectionObserver(function(entries){entries.forEach(function(e,i){if(e.isIntersecting){setTimeout(function(){e.target.classList.add('on');},i*60);ro.unobserve(e.target);}});},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
