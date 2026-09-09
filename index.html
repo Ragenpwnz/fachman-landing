@@ -224,12 +224,8 @@ const SCREENS = ["screens/01-dashboard.jpg","screens/02-zakazky.jpg","screens/03
 
 const texLoader = new THREE.TextureLoader();
 const textures = SCREENS.map(function(src){
-  var tex = texLoader.load(src,
-    function(t){ tex.needsUpdate = true; console.log('TEX_OK', src, t.image.width, t.image.height); },
-    undefined,
-    function(err){ console.error('TEX_ERR', src, err); }
-  );
-  tex.colorSpace = THREE.SRGBColorSpace;
+  var tex = texLoader.load(src);
+  tex.encoding = THREE.sRGBEncoding;
   tex.generateMipmaps = false;
   tex.minFilter = THREE.LinearFilter;
   tex.magFilter = THREE.LinearFilter;
@@ -246,6 +242,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
+renderer.outputEncoding = THREE.sRGBEncoding;
 const MAX_ANISO = renderer.capabilities.getMaxAnisotropy();
 textures.forEach(t=>{ t.anisotropy = MAX_ANISO; });
 
@@ -314,10 +311,10 @@ function buildPhone(screenTex) {
   g.add(new THREE.Mesh(roundedBox(pw+0.06,ph+0.06,pd*0.7,0.38), matAlu));
   const scrMat = new THREE.MeshBasicMaterial({map: screenTex, toneMapped:false});
   const scr = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.26,ph-0.26), scrMat);
-  scr.position.z = pd/2+0.02; g.add(scr);
+  scr.position.z = pd/2+0.09; g.add(scr);
   const glass = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.1,ph-0.1),
     new THREE.MeshPhysicalMaterial({transparent:true,opacity:0.06,roughness:0.06,metalness:0,clearcoat:1}));
-  glass.position.z = pd/2+0.04; g.add(glass);
+  glass.position.z = pd/2+0.11; g.add(glass);
   const camPlate = new THREE.Mesh(roundedBox(1.15,1.15,0.12,0.28),
     new THREE.MeshPhysicalMaterial({color:0x141519,metalness:0.8,roughness:0.4,envMapIntensity:1.1}));
   camPlate.position.set(-pw/2+0.75,ph/2-0.85,-pd/2-0.02); g.add(camPlate);
