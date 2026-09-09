@@ -376,6 +376,7 @@ function applyState() {
     ph.group.position.y = s.y || 0;
     ph.group.rotation.y = s.rotY;
     ph.group.scale.setScalar(s.scale);
+    ph.group.visible = s.bright > 0.03;
     ph.group.traverse(function(child) {
       if (!child.isMesh || !child.material) return;
       var m = child.material;
@@ -510,6 +511,20 @@ function onScroll() {
     pState[phoneSlots[2]].bright = lerp(0, SLOT_BRIGHT[2], p2);
     pState[phoneSlots[0]].scale  = lerp(0.5, SLOT_SCALE[0], p2);
     pState[phoneSlots[2]].scale  = lerp(0.5, SLOT_SCALE[2], p2);
+    applyState();
+  }
+
+  var p3 = ease(Math.min(Math.max((p-0.82)/0.18, 0), 1));
+  if (carOn && !animating) {
+    var exitXAdd = [-3.5, 0, 3.5];
+    phones.forEach(function(_,i) {
+      var slot = phoneSlots.indexOf(i);
+      pState[i].x      = SLOT_X[slot] + exitXAdd[slot]*p3;
+      pState[i].rotY   = SLOT_ROTY[slot];
+      pState[i].y      = 0;
+      pState[i].scale  = SLOT_SCALE[slot]*(1-p3*0.5);
+      pState[i].bright = SLOT_BRIGHT[slot]*(1-p3);
+    });
     applyState();
   }
 
