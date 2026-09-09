@@ -306,7 +306,14 @@ function roundedPlane(w,h,r) {
   s.lineTo(bx+w,by+h-r); s.quadraticCurveTo(bx+w,by+h,bx+w-r,by+h);
   s.lineTo(bx+r,by+h); s.quadraticCurveTo(bx,by+h,bx,by+h-r);
   s.lineTo(bx,by+r); s.quadraticCurveTo(bx,by,bx+r,by);
-  return new THREE.ShapeGeometry(s, 24);
+  const geo = new THREE.ShapeGeometry(s, 24);
+  const pos = geo.attributes.position;
+  const uv = geo.attributes.uv;
+  for (var i=0;i<pos.count;i++){
+    uv.setXY(i, (pos.getX(i)-bx)/w, (pos.getY(i)-by)/h);
+  }
+  uv.needsUpdate = true;
+  return geo;
 }
 
 const matBody = new THREE.MeshPhysicalMaterial({color:0x1b1c1f,metalness:0.9,roughness:0.35,clearcoat:0.6,clearcoatRoughness:0.25,envMapIntensity:1.2});
