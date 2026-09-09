@@ -312,7 +312,7 @@ function buildPhone(screenTex) {
   const scrMat = new THREE.MeshBasicMaterial({map: screenTex, toneMapped:false});
   const scr = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.26,ph-0.26), scrMat);
   scr.position.z = pd/2+0.09; g.add(scr);
-  const glass = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.1,ph-0.1),
+  const glass = new THREE.Mesh(new THREE.PlaneGeometry(pw-0.27,ph-0.27),
     new THREE.MeshPhysicalMaterial({transparent:true,opacity:0.06,roughness:0.06,metalness:0,clearcoat:1}));
   glass.position.z = pd/2+0.11; g.add(glass);
   const camPlate = new THREE.Mesh(roundedBox(1.15,1.15,0.12,0.28),
@@ -502,13 +502,14 @@ function onScroll() {
   var p2 = ease(Math.min(Math.max((p-0.4)/0.35, 0), 1));
 
   if (!carOn) {
+    var p2v = Math.max(0, Math.min(1, (p2-0.4)/0.6));
     pState[phoneSlots[1]].y      = lerp(HERO_HIDE_Y, 0, p1);
     pState[phoneSlots[0]].x     = lerp(0, SLOT_X[0], p2);
     pState[phoneSlots[2]].x     = lerp(0, SLOT_X[2], p2);
-    pState[phoneSlots[0]].bright = lerp(0, SLOT_BRIGHT[0], p2);
-    pState[phoneSlots[2]].bright = lerp(0, SLOT_BRIGHT[2], p2);
-    pState[phoneSlots[0]].scale  = lerp(0.5, SLOT_SCALE[0], p2);
-    pState[phoneSlots[2]].scale  = lerp(0.5, SLOT_SCALE[2], p2);
+    pState[phoneSlots[0]].bright = lerp(0, SLOT_BRIGHT[0], p2v);
+    pState[phoneSlots[2]].bright = lerp(0, SLOT_BRIGHT[2], p2v);
+    pState[phoneSlots[0]].scale  = lerp(0.35, SLOT_SCALE[0], p2v);
+    pState[phoneSlots[2]].scale  = lerp(0.35, SLOT_SCALE[2], p2v);
     applyState();
   }
 
