@@ -489,15 +489,22 @@ var c3d = document.getElementById("c3d");
 // further whenever needed so it never overlaps it - but never reveal MORE
 // than the tuned baseline on viewports where there's already room.
 var heroHideY = HERO_HIDE_Y;
+function pixelYToWorldY(px, vh) {
+  // Use the camera's actual (current) projection instead of hand-rolled
+  // trig, so this stays correct regardless of the small look-at tilt.
+  var ndcY = 1 - (px / vh) * 2;
+  var near = new THREE.Vector3(0, ndcY, -1).unproject(camera);
+  var far  = new THREE.Vector3(0, ndcY,  1).unproject(camera);
+  var dir  = far.sub(near).normalize();
+  var t = (0 - near.z) / dir.z;
+  return near.y + dir.y * t;
+}
 function computeHeroHideY() {
   var vh = window.innerHeight;
   var rect = ht.getBoundingClientRect();
   var marginPx = 28;
-  var vfovRad = 42 * Math.PI / 180;
-  var visH = 2 * Z_HERO * Math.tan(vfovRad / 2);
-  var worldTop = CAM_Y + visH / 2;
-  var fFromTop = Math.min(1.05, (rect.bottom + marginPx) / vh);
-  var targetWorldY = worldTop - fFromTop * visH;
+  var targetPx = Math.min(vh * 1.05, rect.bottom + marginPx);
+  var targetWorldY = pixelYToWorldY(targetPx, vh);
   var computed = targetWorldY - (PHONE_H / 2);
   return Math.min(HERO_HIDE_Y, computed);
 }
@@ -510,7 +517,10 @@ camera.lookAt(0, 0, 0);
 updateHeroHideY();
 pState[phoneSlots[1]].y = heroHideY;
 applyState();
-window.addEventListener("resize", updateHeroHideY);
+window.addEventListener("resize", function() {
+  updateHeroHideY();
+  onScroll();
+});
 
 function onScroll() {
   var sy = window.scrollY;
