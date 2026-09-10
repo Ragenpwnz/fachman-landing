@@ -316,9 +316,11 @@ const matAlu  = new THREE.MeshPhysicalMaterial({color:0x2a2b2f,metalness:1.0,rou
 const lensMat = new THREE.MeshPhysicalMaterial({color:0x0a1a2a,metalness:0.3,roughness:0.02,clearcoat:1,clearcoatRoughness:0.02,transmission:0.5,ior:1.5,envMapIntensity:2.0,reflectivity:1});
 const lensRingMat = new THREE.MeshStandardMaterial({color:0x2a2b2f,metalness:1,roughness:0.3});
 
+const PHONE_W = 2.5, PHONE_H = 5.1;
+
 function buildPhone(screenTex) {
   const g = new THREE.Group();
-  const pw=2.5, ph=5.1, pd=0.34;
+  const pw=PHONE_W, ph=PHONE_H, pd=0.34;
   const body = new THREE.Mesh(roundedBox(pw,ph,pd,0.36), matBody);
   body.castShadow=true; body.receiveShadow=true; g.add(body);
   g.add(new THREE.Mesh(roundedBox(pw+0.06,ph+0.06,pd*0.7,0.38), matAlu));
@@ -481,10 +483,34 @@ var arrR = document.getElementById("arrR");
 var nameEl = document.getElementById("carName");
 var c3d = document.getElementById("c3d");
 
+// On short viewports the hero text (fixed pixel height) can eat into the
+// same screen-space fraction the phone's peek occupies (peek is sized as a
+// fraction of 100vh). Measure the text block and push the phone down
+// further whenever needed so it never overlaps it - but never reveal MORE
+// than the tuned baseline on viewports where there's already room.
+var heroHideY = HERO_HIDE_Y;
+function computeHeroHideY() {
+  var vh = window.innerHeight;
+  var rect = ht.getBoundingClientRect();
+  var marginPx = 28;
+  var vfovRad = 42 * Math.PI / 180;
+  var visH = 2 * Z_HERO * Math.tan(vfovRad / 2);
+  var worldTop = CAM_Y + visH / 2;
+  var fFromTop = Math.min(1.05, (rect.bottom + marginPx) / vh);
+  var targetWorldY = worldTop - fFromTop * visH;
+  var computed = targetWorldY - (PHONE_H / 2);
+  return Math.min(HERO_HIDE_Y, computed);
+}
+function updateHeroHideY() {
+  heroHideY = computeHeroHideY();
+}
+
 camera.position.set(0, CAM_Y, Z_HERO);
 camera.lookAt(0, 0, 0);
-pState[phoneSlots[1]].y = HERO_HIDE_Y;
+updateHeroHideY();
+pState[phoneSlots[1]].y = heroHideY;
 applyState();
+window.addEventListener("resize", updateHeroHideY);
 
 function onScroll() {
   var sy = window.scrollY;
@@ -505,7 +531,7 @@ function onScroll() {
 
   if (!carOn) {
     var p2v = Math.max(0, Math.min(1, (p2-0.4)/0.6));
-    pState[phoneSlots[1]].y      = lerp(HERO_HIDE_Y, 0, p1);
+    pState[phoneSlots[1]].y      = lerp(heroHideY, 0, p1);
     pState[phoneSlots[0]].x     = lerp(0, SLOT_X[0], p2);
     pState[phoneSlots[2]].x     = lerp(0, SLOT_X[2], p2);
     pState[phoneSlots[0]].bright = lerp(0, SLOT_BRIGHT[0], p2v);
