@@ -42,11 +42,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:cen
 .arr:hover{color:var(--or)}
 #arrL{right:calc(50% + 210px)}
 #arrR{left:calc(50% + 210px)}
-.car-dots{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);display:flex;gap:9px;opacity:0;transition:opacity .5s;z-index:25;pointer-events:none}
-.car-dots.show{opacity:1;pointer-events:auto}
-.cdot{width:7px;height:7px;border-radius:50%;background:var(--brd);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
-.cdot.on{background:var(--or);transform:scale(1.4)}
-.car-name{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);opacity:0;transition:opacity .5s;z-index:25;white-space:nowrap}
+.car-name{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);opacity:0;transition:opacity .5s;z-index:25;white-space:nowrap}
 .car-name.show{opacity:1}
 .sec-lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);font-weight:600;margin-bottom:12px;text-align:center}
 h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.4rem,4vw,3.6rem);text-transform:uppercase;line-height:1;margin-bottom:56px;text-align:center}
@@ -141,7 +137,6 @@ footer a:hover{color:var(--or)}
     <canvas id="c3d"></canvas>
     <div class="arr" id="arrL">&#8249;</div>
     <div class="arr" id="arrR">&#8250;</div>
-    <div class="car-dots" id="carDots"></div>
     <div class="car-name" id="carName"></div>
   </div>
 </div>
@@ -411,18 +406,8 @@ function refreshTextures() {
 }
 refreshTextures();
 
-var carDots = document.getElementById("carDots");
 var carName = document.getElementById("carName");
-for (var di = 0; di < N; di++) {
-  (function(idx) {
-    var d = document.createElement("button");
-    d.className = "cdot" + (idx===0?" on":"");
-    d.addEventListener("click", function() { goTo(idx); ra(); });
-    carDots.appendChild(d);
-  })(di);
-}
 function updateDots() {
-  document.querySelectorAll(".cdot").forEach(function(d,i) { d.classList.toggle("on",i===cur); });
   carName.textContent = LABELS[cur];
 }
 updateDots();
@@ -484,16 +469,15 @@ canvas.addEventListener("touchend", function(e) {
 function sa() { autoT=setInterval(function(){navigate(1);},4200); }
 function ra() { clearInterval(autoT); if(carOn) sa(); }
 
-var Z_HERO = 4.4;
+var Z_HERO = 5.6;
 var Z_CAR  = 11.0;
 var CAM_Y  = 0.15;
-var HERO_HIDE_Y = -3.05;
+var HERO_HIDE_Y = -3.25;
 
 var ht = document.getElementById("ht");
 var sz = document.getElementById("sz");
 var arrL = document.getElementById("arrL");
 var arrR = document.getElementById("arrR");
-var dotsEl = document.getElementById("carDots");
 var nameEl = document.getElementById("carName");
 var c3d = document.getElementById("c3d");
 
@@ -517,7 +501,7 @@ function onScroll() {
   camera.position.set(0, CAM_Y, camZ);
   camera.lookAt(0, 0, 0);
 
-  var p2 = ease(Math.min(Math.max((p-0.4)/0.35, 0), 1));
+  var p2 = ease(Math.min(Math.max((p-0.4)/0.6, 0), 1));
 
   if (!carOn) {
     var p2v = Math.max(0, Math.min(1, (p2-0.4)/0.6));
@@ -531,8 +515,10 @@ function onScroll() {
     applyState();
   }
 
-  var p3 = ease(Math.min(Math.max((p-0.82)/0.18, 0), 1));
-  if (carOn && !animating) {
+  var p3 = ease(Math.min(Math.max((p-0.88)/0.12, 0), 1));
+  if (carOn && p3 > 0.001) {
+    animating = false;
+    clearInterval(autoT);
     var exitXAdd = [-3.5, 0, 3.5];
     phones.forEach(function(_,i) {
       var slot = phoneSlots.indexOf(i);
@@ -548,20 +534,17 @@ function onScroll() {
   if (p2 > 0.6 && !carOn) {
     carOn = true;
     c3d.classList.add("car-on");
-    arrL.classList.add("show");
-    arrR.classList.add("show");
-    dotsEl.classList.add("show");
-    nameEl.classList.add("show");
     sa();
   } else if (p2 <= 0.6 && carOn) {
     carOn = false;
     c3d.classList.remove("car-on");
-    arrL.classList.remove("show");
-    arrR.classList.remove("show");
-    dotsEl.classList.remove("show");
-    nameEl.classList.remove("show");
     clearInterval(autoT);
   }
+
+  var showUi = carOn && p3 < 0.05;
+  arrL.classList.toggle("show", showUi);
+  arrR.classList.toggle("show", showUi);
+  nameEl.classList.toggle("show", showUi);
 }
 window.addEventListener("scroll", onScroll, {passive:true});
 onScroll();
